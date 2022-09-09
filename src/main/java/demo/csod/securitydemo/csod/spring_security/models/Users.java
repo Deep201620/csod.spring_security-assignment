@@ -26,7 +26,7 @@ public class Users {
     @Column(unique = true)
     private String emailId;
 
-    @Setter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.NONE)
     private LocalDate bDate;
 
     @NotNull

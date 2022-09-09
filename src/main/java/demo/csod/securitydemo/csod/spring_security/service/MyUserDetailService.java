@@ -17,7 +17,6 @@ import java.security.Principal;
 import java.util.Optional;
 
 @Service
-@Slf4j
 public class MyUserDetailService implements UserDetailsService {
 
     @Autowired
@@ -27,7 +26,6 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
         Optional<Users> user = Optional.of(userRepository.findByEmailId(emailId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email ")));
-        log.info("User loggedin successfully");
         return user.map(MyUserDetails::new).get();
     }
 }

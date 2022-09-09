@@ -16,6 +16,9 @@
         <li class="nav-item">
             <a class="nav-link" href="index">Home</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="welcome">Dashboard</a>
+        </li>
     </ul>
 </nav>
 <h2 style="margin: 20%;">Hello User</h2>

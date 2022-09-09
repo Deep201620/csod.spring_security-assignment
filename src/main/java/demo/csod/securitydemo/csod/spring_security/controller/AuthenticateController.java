@@ -1,5 +1,6 @@
 package demo.csod.securitydemo.csod.spring_security.controller;
 
+import demo.csod.securitydemo.csod.spring_security.dto.LoginRequestDTO;
 import demo.csod.securitydemo.csod.spring_security.dto.RegisterDto;
 import demo.csod.securitydemo.csod.spring_security.models.Users;
 import demo.csod.securitydemo.csod.spring_security.service.AuthenticateService;
@@ -21,6 +22,9 @@ public class AuthenticateController {
 
     @Autowired
     dtoMapper dtoMapperobj;
+
+    private final String REGISTERED_SUCCESS = "User Registered Successfully";
+    private final String LOGIN_SUCCESS = "User Logged in";
 
     @GetMapping("/register")
     public String register() {
@@ -47,15 +51,13 @@ public class AuthenticateController {
         Users user = dtoMapperobj.dtoToEntity(registerDto);
         Users registeredUser = authenticateService.saveUser(user);
         RegisterDto userDto = dtoMapperobj.entityToDto(registeredUser);
-        log.info("User Registered Successfully");
+        log.info(REGISTERED_SUCCESS);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(LoginRequestDTO loginRequestDTO) {
-//            userDetailService.loadUserByUsername(loginRequestDTO.getEmailId());
-//            return new ResponseEntity<>(LOGIN_SUCCESS, HttpStatus.OK);
-////        return authenticateService.validLogin(loginRequestDTO);
-//    }
-
+    @PostMapping("/apilogin")
+    public ResponseEntity<String> loginApi(LoginRequestDTO loginRequestDTO) {
+        authenticateService.validLogin(loginRequestDTO);
+        return new ResponseEntity<>(LOGIN_SUCCESS, HttpStatus.OK);
+    }
 }

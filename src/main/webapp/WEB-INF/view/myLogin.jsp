@@ -20,10 +20,9 @@
         </li>
     </ul>
 </nav>
-
 <div class="container">
   <h2>Login form</h2>
- <form class="form-horizontal" action="/login" id="loginForm" method="post">
+ <form class="form-horizontal" action="/apilogin" id="loginForm" method="post">
  <div class="form-group">
       <label class="control-label col-sm-2" for="email">Email:</label>
       <div class="col-sm-10">
@@ -43,7 +42,6 @@
         </div>
     </form>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 

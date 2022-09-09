@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 public class MyControllerAdvice {
 
     @ExceptionHandler(ResourceNotFound.class)
-    public ResponseEntity<String> handleUserExists(ResourceNotFound resourceNotFound){
-        return new ResponseEntity<>("User does not exist",HttpStatus.CONFLICT);
+    public ResponseEntity<String> handleUserNotExists(ResourceNotFound resourceNotFound){
+        return new ResponseEntity<>("User does not exist",HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserAlreadyExists.class)
@@ -25,7 +26,7 @@ public class MyControllerAdvice {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<String> handleHttpMethodNotSupported(
             HttpRequestMethodNotSupportedException methodNotSupportedException, HttpServletRequest httpServletRequest){
-        return new ResponseEntity<>(httpServletRequest.getMethod()+"method is not supported with following parameters"
+        return new ResponseEntity<>(httpServletRequest.getMethod()+" method is not supported with following parameters"
                 ,HttpStatus.METHOD_NOT_ALLOWED);
     }
 
@@ -39,5 +40,10 @@ public class MyControllerAdvice {
         return new ResponseEntity<>("Data cannot be null. Please provide some data",HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
+    public ResponseEntity<String> handleInternalServerError
+            (HttpServerErrorException.InternalServerError internalServerError){
+        return new ResponseEntity<>("Something went wrong. please try again later",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
