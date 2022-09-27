@@ -7,43 +7,43 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpServerErrorException;
-
 import javax.servlet.http.HttpServletRequest;
+import static demo.csod.securitydemo.csod.spring_security.exception.IErrorMessage.*;
 
 @ControllerAdvice
 public class MyControllerAdvice {
 
     @ExceptionHandler(ResourceNotFound.class)
     public ResponseEntity<String> handleUserNotExists(ResourceNotFound resourceNotFound){
-        return new ResponseEntity<>("User does not exist",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(USER_NOT_EXIST,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserAlreadyExists.class)
     public ResponseEntity<String> handleUserExists(UserAlreadyExists userAlreadyExists){
-        return new ResponseEntity<>("User already exists with the same emailId",HttpStatus.CONFLICT);
+        return new ResponseEntity<>( USER_EXISTS,HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<String> handleHttpMethodNotSupported(
             HttpRequestMethodNotSupportedException methodNotSupportedException, HttpServletRequest httpServletRequest){
-        return new ResponseEntity<>(httpServletRequest.getMethod()+" method is not supported with following parameters"
+        return new ResponseEntity<>(httpServletRequest.getMethod()+METHOD_NOT_SUPPORTED
                 ,HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArguments(IllegalArgumentException illegalArgumentException){
-        return new ResponseEntity<>("Some fields are not filled with valid data. please look into it.",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(CHECK_FIELDS,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MappingException.class)
     public ResponseEntity<String> handleMapperExceptin(MappingException mappingException){
-        return new ResponseEntity<>("Data cannot be null. Please provide some data",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(NULL_FIELDS,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     public ResponseEntity<String> handleInternalServerError
             (HttpServerErrorException.InternalServerError internalServerError){
-        return new ResponseEntity<>("Something went wrong. please try again later",HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

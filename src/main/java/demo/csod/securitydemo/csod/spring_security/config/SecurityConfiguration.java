@@ -15,15 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/register", "/index").permitAll()
+                .antMatchers("/login", "/register", "/index","/getUser").permitAll()
                 .antMatchers("/welcome").authenticated()
                 .and()
                 .formLogin().loginPage("/login")

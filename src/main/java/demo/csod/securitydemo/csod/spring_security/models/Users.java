@@ -9,10 +9,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
 public class Users {
 
     @Id

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static demo.csod.securitydemo.csod.spring_security.exception.IErrorMessage.USER_EXISTS;
+
 @Slf4j
 @Service
 public class ValidatorService {
@@ -20,28 +22,15 @@ public class ValidatorService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private final String USER_EXIST = "User exists with same emailId";
-
     public boolean userExist(String emailId) {
         Optional<Users> user = userRepository.findByEmailId(emailId);
         if (user.isEmpty())
             return false;
-        throw new UserAlreadyExists(101, USER_EXIST);
+        throw new UserAlreadyExists(101, USER_EXISTS);
     }
 
     public String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
 
-
-//    public boolean authenticateUser(String emailId, String password) {
-//        Optional<Users> user = Optional.of(userRepository.findByEmailId(emailId).
-//                orElseThrow(() -> new ResourceNotFound(USER_NOT_FOUND,emailId)));
-//        return matchPassword(user, password);
-//    }
-
-    //    public boolean matchPassword(Optional<Users> user, String loginPassword) {
-//        String savedPassword = user.get().getPassword();
-//        return passwordEncoder.matches(loginPassword, savedPassword);
-//    }
 }

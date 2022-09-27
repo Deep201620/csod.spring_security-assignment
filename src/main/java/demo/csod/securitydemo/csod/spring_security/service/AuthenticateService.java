@@ -1,13 +1,13 @@
 package demo.csod.securitydemo.csod.spring_security.service;
 
 import demo.csod.securitydemo.csod.spring_security.dto.LoginRequestDTO;
+import demo.csod.securitydemo.csod.spring_security.dto.RegisterDto;
 import demo.csod.securitydemo.csod.spring_security.exception.ResourceNotFound;
 import demo.csod.securitydemo.csod.spring_security.models.Users;
 import demo.csod.securitydemo.csod.spring_security.repository.UserRepository;
+import demo.csod.securitydemo.csod.spring_security.utils.dtoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticateService {
 
+    public static final String LOGIN_SUCCESSFUL = "Login Successful";
+    public static final String INCORRECT_CREDENTIALS = "Username/password is incorrect";
+
     @Autowired
     UserRepository userRepository;
 
@@ -28,30 +31,28 @@ public class AuthenticateService {
     @Autowired
     ValidatorService validatorService;
 
-    public Users saveUser(Users user) {
-        validatorService.userExist(user.getEmailId());
+    @Autowired
+    dtoMapper dtoMapperObj;
+
+    public RegisterDto saveUser(RegisterDto registerDto) {
+        validatorService.userExist(registerDto.getEmailId());
+        Users user = dtoMapperObj.dtoToEntity(registerDto);
         user.setPassword(validatorService.encryptPassword(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        RegisterDto userDto = dtoMapperObj.entityToDto(user);
+        return userDto;
     }
 
-//    public ResponseEntity<String> validLogin(LoginRequestDTO loginRequestDTO) {
-//        String emailId = loginRequestDTO.getEmailId();
-//        String password = loginRequestDTO.getPassword();
-//        if (validatorService.authenticateUser(emailId, password))
-//            return new ResponseEntity<>(LOGIN_SUCCESS, HttpStatus.OK);
-//        return new ResponseEntity<>(INVALID_CREDENTIALS, HttpStatus.NOT_FOUND);
-//    }
-
-    public void validLogin(LoginRequestDTO loginRequestDTO){
+    public void validateLogin(LoginRequestDTO loginRequestDTO) {
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmailId(),
                             loginRequestDTO.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("Login Successful");
+            log.info(LOGIN_SUCCESSFUL);
         } catch (BadCredentialsException e) {
-            throw new ResourceNotFound("Username/password is incorrect", loginRequestDTO.getEmailId());
+            throw new ResourceNotFound(INCORRECT_CREDENTIALS, loginRequestDTO.getEmailId());
         }
     }
 }

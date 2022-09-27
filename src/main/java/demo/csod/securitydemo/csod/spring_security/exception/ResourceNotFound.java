@@ -6,9 +6,8 @@ public class ResourceNotFound extends RuntimeException {
     private String resourceId;
 
 
-    public ResourceNotFound(String resourcename, String resourceId) {
-        this.errorMessage = resourcename;
+    public ResourceNotFound(String errorMessage, String resourceId) {
+        this.errorMessage = errorMessage;
         this.resourceId = resourceId;
-
     }
 }
