@@ -37,7 +37,7 @@ public class AuthenticateController {
     private final String REGISTERED_SUCCESS = "User Registered Successfully";
     private final String LOGIN_SUCCESS = "User Logged in";
     private final String GRAPHQL_QUERY = "{ users (where: {id_eq: 1}){firstName email creationDate}}";
-//    private final String GRAPHQL_QUERY = "{\n" +
+    //    private final String GRAPHQL_QUERY = "{\n" +
 //        "  users(where: {inactive_eq: false}) {\n" +
 //        "    firstName\n" +
 //        "    email\n" +
@@ -93,27 +93,37 @@ public class AuthenticateController {
                 , HttpMethod.GET,
                 entity, String.class).getBody();
 //        return resultJson;
-        JSONObject jsonObject = new JSONObject(resultJson);
-        boolean dohave = jsonObject.has("data");
-        if(dohave) {
-            JSONObject usersObject = jsonObject.getJSONObject("data");
-            JSONArray jsonArray = (JSONArray) usersObject.get("users");
-            JSONObject user1Object = (JSONObject) jsonArray.get(0);
-            String userJsonString = user1Object.toString();
-            try {
-                RegisterDto registerDto = objectMapper.readValue(userJsonString, RegisterDto.class);
-                System.out.println(registerDto);
-                registerDto.setPassword("mtedPassword");
-                ResponseEntity responseEntity = register(registerDto);
-                System.out.println(responseEntity.getBody());
-
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-//            System.out.println(usersObject.get("users"));
-
-//            System.out.println(jsonObject.get("data['users']"));
+        try {
+            JsonNode jsonObject = objectMapper.readTree(resultJson);
+            String userData = jsonObject.get("data").get("users").get(0).toString();
+            RegisterDto registerDto = objectMapper.readValue(userData, RegisterDto.class);
+            registerDto.setPassword("mtedPassword");
+            ResponseEntity responseEntity = register(registerDto);
+            System.out.println(responseEntity.getBody());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
+//        JSONObject jsonObject = new JSONObject(resultJson);
+//        boolean dohave = jsonObject.has("data");
+//        if(dohave) {
+//            JSONObject usersObject = jsonObject.getJSONObject("data");
+//            JSONArray jsonArray = (JSONArray) usersObject.get("users");
+//            JSONObject user1Object = (JSONObject) jsonArray.get(0);
+//            String userJsonString = user1Object.toString();
+//            try {
+//                RegisterDto registerDto = objectMapper.readValue(userJsonString, RegisterDto.class);
+//                System.out.println(registerDto);
+////                registerDto.setPassword("mtedPassword");
+////                ResponseEntity responseEntity = register(registerDto);
+////                System.out.println(responseEntity.getBody());
+//
+//            } catch (JsonProcessingException e) {
+//                throw new RuntimeException(e);
+//            }
+////            System.out.println(usersObject.get("users"));
+//
+////            System.out.println(jsonObject.get("data['users']"));
+//        }
 
     }
 }

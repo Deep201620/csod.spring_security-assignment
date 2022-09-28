@@ -27,13 +27,13 @@ public class Users {
     private String emailId;
 
     @Setter(AccessLevel.NONE)
-    private LocalDate bDate;
+    private LocalDate creationDate;
 
     @NotNull
     private String password;
 
-    public void setbDate(String bDate) {
-        this.bDate = LocalDate.parse(bDate);
+    public void setCreationDate(String creationDate) {
+        this.creationDate = LocalDate.parse(creationDate);
     }
 
 }

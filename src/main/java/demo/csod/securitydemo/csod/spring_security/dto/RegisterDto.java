@@ -27,14 +27,14 @@ public class RegisterDto {
     private String emailId;
 
     @JsonProperty(value = "creationDate")
-    private LocalDate bDate;
+    private LocalDate creationDate;
 
     @NotNull
     @JsonIgnore
     private String password;
 
-    public void setbDate(Date bDate) {
-        this.bDate = bDate.toInstant()
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
