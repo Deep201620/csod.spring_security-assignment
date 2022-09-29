@@ -2,6 +2,7 @@ package demo.csod.securitydemo.csod.spring_security.service;
 
 import demo.csod.securitydemo.csod.spring_security.dto.LoginRequestDTO;
 import demo.csod.securitydemo.csod.spring_security.dto.RegisterDto;
+import demo.csod.securitydemo.csod.spring_security.dto.UsersDto;
 import demo.csod.securitydemo.csod.spring_security.exception.ResourceNotFound;
 import demo.csod.securitydemo.csod.spring_security.models.Users;
 import demo.csod.securitydemo.csod.spring_security.repository.UserRepository;
@@ -34,12 +35,13 @@ public class AuthenticateService {
     @Autowired
     dtoMapper dtoMapperObj;
 
-    public RegisterDto saveUser(RegisterDto registerDto) {
-        validatorService.userExist(registerDto.getEmailId());
-        Users user = dtoMapperObj.dtoToEntity(registerDto);
+    public UsersDto saveUser(UsersDto usersDto) {
+        validatorService.userExist(usersDto.getEmailId());
+        Users user = dtoMapperObj.dtoToEntity(usersDto);
+        log.info("User registered with email "+user.getEmailId()+" and password "+user.getPassword());
         user.setPassword(validatorService.encryptPassword(user.getPassword()));
         userRepository.save(user);
-        RegisterDto userDto = dtoMapperObj.entityToDto(user);
+        UsersDto userDto = dtoMapperObj.entityToDto(user);
         return userDto;
     }
 

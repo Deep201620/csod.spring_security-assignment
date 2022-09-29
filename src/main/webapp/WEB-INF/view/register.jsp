@@ -26,15 +26,15 @@
   <h2>Registration form</h2>
   <form class="form-horizontal" action="/register" id="regForm" method="post">
   <div class="form-group">
-      <label class="control-label col-sm-2" for="name">Name:</label>
+      <label class="control-label col-sm-2" for="firstName">Name:</label>
       <div class="col-sm-10">
-        <input type="name" class="form-control" id="name" placeholder="Enter Name" name="userName">
+        <input type="name" class="form-control" id="firstName" placeholder="Enter Name" name="firstName">
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="email">Email:</label>
       <div class="col-sm-10">
-        <input type="email" class="form-control" id="email" placeholder="Enter email" name="emailId" required>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
       </div>
     </div>
     <div class="form-group">
