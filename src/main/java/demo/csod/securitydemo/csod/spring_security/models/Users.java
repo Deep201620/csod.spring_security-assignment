@@ -1,13 +1,12 @@
 package demo.csod.securitydemo.csod.spring_security.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
@@ -20,33 +19,42 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @JsonProperty(value = "firstName")
     @NotNull
+    private String firstName;
+
+    @NotNull
+    private String lastName;
+
+    @NotNull
+    private String language;
+
+
+    @NotNull(message = "Username cannot be null")
+    @JsonProperty(value = "login")
     private String userName;
+
+    public Users(String firstName, String lastName, String userName, String emailId, String language, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.language = language;
+        this.userName = userName;
+        this.emailId = emailId;
+        this.password = password;
+    }
 
     @NotNull
     @Column(unique = true)
     @JsonProperty(value = "email")
     private String emailId;
 
-
-    @JsonProperty(value = "creationDate")
-    private LocalDate creationDate;
+    private Date creationDate;
 
     @NotNull
-    @JsonIgnore
     private String password;
 
     @NotNull
-    @JsonIgnore
     private String sourceSystem;
 
 
-//    public void setCreationDate(Date date){
-//        this.creationDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//    }
-//
-//    public LocalDate getCreationDate() {
-//        return creationDate;
-//    }
+
 }

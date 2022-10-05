@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class AuthenticateService {
@@ -38,9 +40,9 @@ public class AuthenticateService {
     public UsersDto saveUser(UsersDto usersDto) {
         validatorService.userExist(usersDto.getEmailId());
         Users user = dtoMapperObj.dtoToEntity(usersDto);
-        log.info("User registered with email "+user.getEmailId()+" and password "+user.getPassword());
+        log.info("User registered with email " + user.getEmailId() + " and password " + user.getPassword());
         user.setPassword(validatorService.encryptPassword(user.getPassword()));
-        userRepository.save(user);
+        Users savedUser = userRepository.save(user);
         UsersDto userDto = dtoMapperObj.entityToDto(user);
         return userDto;
     }
@@ -56,5 +58,10 @@ public class AuthenticateService {
         } catch (BadCredentialsException e) {
             throw new ResourceNotFound(INCORRECT_CREDENTIALS, loginRequestDTO.getEmailId());
         }
+    }
+
+    public List<Users> getUsers(){
+        List<Users> usersList = userRepository.findAllGeneralUsers("General");
+        return usersList;
     }
 }

@@ -1,12 +1,14 @@
 package demo.csod.securitydemo.csod.spring_security.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 @Data
@@ -15,30 +17,32 @@ import java.util.Date;
 @NoArgsConstructor
 public class UsersDto {
 
-    @NotNull(message = "Username cannot be null")
-    @JsonProperty(value = "firstName")
+    @NotNull
+    @JsonProperty(value = "login")
     private String userName;
 
     @NotNull
     @JsonProperty(value = "email")
     private String emailId;
 
-    @JsonProperty(value = "creationDate")
-    private LocalDate creationDate;
+    @NotNull
+    private String language;
 
     @NotNull
     @JsonIgnore
     private String password;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonProperty(value = "creationDate")
+    private Date creationDate;
+
     @JsonIgnore
     private String sourceSystem;
 
-    public void setCreationDate(Date date){
-        this.creationDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
+    @NotNull
+    private String firstName;
 
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
+    @NotNull
+    private String lastName;
 
 }
