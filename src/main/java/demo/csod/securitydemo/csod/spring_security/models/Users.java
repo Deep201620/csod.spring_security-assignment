@@ -1,17 +1,16 @@
 package demo.csod.securitydemo.csod.spring_security.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Users {
 
@@ -33,6 +32,7 @@ public class Users {
     @JsonProperty(value = "login")
     private String userName;
 
+
     public Users(String firstName, String lastName, String userName, String emailId, String language, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,9 +52,17 @@ public class Users {
     @NotNull
     private String password;
 
-    @NotNull
-    private String sourceSystem;
+    @OneToOne(mappedBy = "user",cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    private UserSourceSystem sourceSystem;
 
 
-
+    public Users(String firstName, String lastName, String language, String userName, String emailId, Date creationDate, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.language = language;
+        this.userName = userName;
+        this.emailId = emailId;
+        this.creationDate = creationDate;
+        this.password = password;
+    }
 }

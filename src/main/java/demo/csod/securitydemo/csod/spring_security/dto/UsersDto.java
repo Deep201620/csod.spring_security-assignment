@@ -3,15 +3,13 @@ package demo.csod.securitydemo.csod.spring_security.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,13 +34,13 @@ public class UsersDto {
     @JsonProperty(value = "creationDate")
     private Date creationDate;
 
-    @JsonIgnore
-    private String sourceSystem;
-
     @NotNull
     private String firstName;
 
     @NotNull
     private String lastName;
+
+    @NotNull
+    private SourceSystemDto sourceSystem;
 
 }

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -72,14 +76,17 @@ public class IntegrationApiService {
         return responseEntity;
     }
 
-    public CreateUserDto setUserDetails(CreateUserDto createUserDto, List<Users> users, int i){
-        createUserDto.setFirstName(users.get(i).getFirstName());
-        createUserDto.setLastName(users.get(i).getLastName());
-        createUserDto.setUserName(users.get(i).getUserName());
-        createUserDto.setEmail(users.get(i).getEmailId());
+    public CreateUserDto setUserDetails( Users users){
+        CreateUserDto createUserDto = new CreateUserDto();
+        createUserDto.setFirstName(users.getFirstName());
+        createUserDto.setLastName(users.getLastName());
+        createUserDto.setUserName(users.getUserName());
+        createUserDto.setEmail(users.getEmailId());
         createUserDto.setUserActivation("ACTIVATEUSERNOWWITHOUTSENDINGEMAILNOTIFICATION");
-        createUserDto.setLanguage(users.get(i).getLanguage());
-        createUserDto.setPassword(users.get(i).getPassword());
+        createUserDto.setLanguage(users.getLanguage());
+        createUserDto.setPassword(users.getPassword());
         return createUserDto;
     }
+
+
 }
