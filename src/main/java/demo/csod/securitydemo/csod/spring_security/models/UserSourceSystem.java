@@ -1,11 +1,18 @@
 package demo.csod.securitydemo.csod.spring_security.models;
 
+import demo.csod.securitydemo.csod.spring_security.dto.SourceSystem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -26,10 +33,6 @@ public class UserSourceSystem implements Serializable {
 
     @NotNull
     private String sourceSystem;
-
-    public UserSourceSystem(String sourceSystem) {
-        this.sourceSystem = sourceSystem;
-    }
 
     private String tlkUserId;
 }

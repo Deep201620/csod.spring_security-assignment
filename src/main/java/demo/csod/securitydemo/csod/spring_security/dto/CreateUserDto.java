@@ -34,4 +34,7 @@ public class CreateUserDto{
 
     @NotNull
     private String userActivation;
+
+    @NotNull
+    private SourceSystemDto sourceSystem;
 }

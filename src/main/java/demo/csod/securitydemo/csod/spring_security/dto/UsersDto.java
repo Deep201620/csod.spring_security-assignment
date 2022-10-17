@@ -15,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class UsersDto {
 
+    private int userId;
+
     @NotNull
     @JsonProperty(value = "login")
     private String userName;
@@ -27,7 +29,7 @@ public class UsersDto {
     private String language;
 
     @NotNull
-    @JsonIgnore
+
     private String password;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -39,6 +41,9 @@ public class UsersDto {
 
     @NotNull
     private String lastName;
+
+    @JsonProperty(value = "id")
+    private String tlkUserId;
 
     @NotNull
     private SourceSystemDto sourceSystem;

@@ -1,8 +1,9 @@
 package demo.csod.securitydemo.csod.spring_security.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import demo.csod.securitydemo.csod.spring_security.models.Users;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +14,5 @@ import javax.validation.constraints.NotNull;
 public class SourceSystemDto {
 
     @NotNull
-    private String sourceSystem;
-
+    private SourceSystem sourceSystem;
 }

@@ -1,12 +1,11 @@
 package demo.csod.securitydemo.csod.spring_security.service;
 
 import demo.csod.securitydemo.csod.spring_security.dto.LoginRequestDTO;
+import demo.csod.securitydemo.csod.spring_security.dto.SourceSystem;
 import demo.csod.securitydemo.csod.spring_security.dto.UsersDto;
 import demo.csod.securitydemo.csod.spring_security.exception.ResourceNotFound;
-import demo.csod.securitydemo.csod.spring_security.models.SchedulerInfo;
 import demo.csod.securitydemo.csod.spring_security.models.UserSourceSystem;
 import demo.csod.securitydemo.csod.spring_security.models.Users;
-import demo.csod.securitydemo.csod.spring_security.repository.SchedulerInfoRepository;
 import demo.csod.securitydemo.csod.spring_security.repository.UserRepository;
 import demo.csod.securitydemo.csod.spring_security.repository.UserSourceSystemRepository;
 import demo.csod.securitydemo.csod.spring_security.utils.dtoMapper;
@@ -20,12 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-import java.util.Collection;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -45,9 +39,6 @@ public class AuthenticateService {
     UserSourceSystemRepository userSourceSystemRepository;
 
     @Autowired
-    SchedulerInfoRepository schedulerInfoRepository;
-
-    @Autowired
     ValidatorService validatorService;
 
     @Autowired
@@ -59,8 +50,9 @@ public class AuthenticateService {
         log.info("User registered with email " + user.getEmailId() + " and password " + user.getPassword());
         user.setPassword(validatorService.encryptPassword(user.getPassword()));
         UserSourceSystem userSourceSystem = new UserSourceSystem();
-        userSourceSystem.setSourceSystem(usersDto.getSourceSystem().getSourceSystem());
+        userSourceSystem.setSourceSystem(usersDto.getSourceSystem().getSourceSystem().name());
         userSourceSystem.setUser(user);
+        userSourceSystem.setTlkUserId(usersDto.getTlkUserId());
         user.setSourceSystem(userSourceSystem);
         Users savedUser = userRepository.save(user);
         UsersDto userDto = dtoMapperObj.entityToDto(savedUser);
@@ -80,15 +72,14 @@ public class AuthenticateService {
         }
     }
 
-    public Users getUsers() {
-        List<UserSourceSystem> usersList = userSourceSystemRepository.findAllGeneralUsers();
+    public List<Users> getUsers() {
+        List<UserSourceSystem> usersList = userSourceSystemRepository.findAllGeneralUsers("General");
         List<UserSourceSystem> userSourceSystemList;
-        Users user = null;
+        List<Users> user = new ArrayList<>();
         if (!(usersList.size() == 0)) {
             userSourceSystemList = findNullusers();
             for (int i = 0; i < userSourceSystemList.size(); i++) {
-                user = userSourceSystemList.get(i).getUser();
-                return user;
+                user.add(userSourceSystemList.get(i).getUser());
             }
         } else {
             throw new ResourceNotFound("No users found", "No user exists with SourceSystem General");
@@ -105,5 +96,10 @@ public class AuthenticateService {
             System.out.println(user);
         }
         return userSourceSystemList;
+    }
+
+    public List<Users> findAllUsers(){
+        List<Users> usersList = userRepository.findAll();
+        return usersList;
     }
 }
