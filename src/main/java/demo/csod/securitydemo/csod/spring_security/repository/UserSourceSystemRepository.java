@@ -19,4 +19,7 @@ public interface UserSourceSystemRepository extends JpaRepository<UserSourceSyst
     @Query("from UserSourceSystem where tlkUserId is null and sourceSystem = 'General'")
     List<UserSourceSystem> findNullUserId();
 
+    @Query("from UserSourceSystem uss join uss.user where uss.user.userId=:userId")
+    UserSourceSystem findUsersByUser(@Param("userId") int userId);
+
 }

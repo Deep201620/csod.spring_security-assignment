@@ -117,5 +117,7 @@ public class AuthenticateController {
     @RequestMapping("/createUser")
     public void sendUser() {
         integrationApiService.sendUserToTalentLink();
+        authenticateService.MapUsertoTlk();
     }
+
 }

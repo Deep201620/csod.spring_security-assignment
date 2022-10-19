@@ -3,6 +3,7 @@ package demo.csod.securitydemo.csod.spring_security.integration;
 import demo.csod.securitydemo.csod.spring_security.dto.CreateUserDto;
 import demo.csod.securitydemo.csod.spring_security.dto.UsersDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -22,6 +24,9 @@ public class IntegrationApiService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Value("${restApi.url.prefix}")
+    private static String urlPrefix;
 
     private final static String REST_API_URL = "http://localhost:8081/registerUserFromTalentlink";
 
@@ -39,6 +44,12 @@ public class IntegrationApiService {
         return usersDtoList;
     }
 
+    public Map getTlkId() {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8081/getTlkId");
+        ResponseEntity<Map> result = restTemplate.exchange(builder.build().toUri(), HttpMethod.GET, null, Map.class);
+        return result.getBody();
+    }
+
     public String passwordGenerator() {
         String password = UUID.randomUUID().toString().replaceAll("-", "");
         return password;
@@ -53,4 +64,6 @@ public class IntegrationApiService {
         String responseEntity = restTemplate.postForObject(postUrl, entity, String.class);
         return responseEntity;
     }
+
+
 }
