@@ -40,7 +40,6 @@ public class AuthenticateController {
     @Autowired
     UserSourceSystemRepository userSourceSystemRepository;
 
-
     private final String REGISTERED_SUCCESS = "User Registered Successfully";
     private final String LOGIN_SUCCESS = "User Logged in";
 
@@ -64,7 +63,6 @@ public class AuthenticateController {
         return "myLogin";
     }
 
-
     @PostMapping(value = REGISTER)
     public ResponseEntity<UsersDto> register(UsersDto usersDto) {
         usersDto.setCreationDate(new Date());
@@ -76,8 +74,8 @@ public class AuthenticateController {
 
     @PostMapping("/apilogin")
     public ResponseEntity<String> loginApi(LoginRequestDTO loginRequestDTO) {
-        authenticateService.validateLogin(loginRequestDTO);
-        return new ResponseEntity<>(LOGIN_SUCCESS, HttpStatus.OK);
+      integrationApiService.login(loginRequestDTO);
+        return ResponseEntity.ok().body("User Logged In");
     }
 
     @RequestMapping(value = "/registerUserFromTalentlink")
@@ -97,7 +95,6 @@ public class AuthenticateController {
     @PostMapping("/getUserDto")
     @ResponseBody
     public List<UsersDto> getUserDto() {
-//        List<Users> usersList = authenticateService.findAllUsers();
         List<Users> user = authenticateService.getUsers();
         List<UsersDto> usersDtoList = new ArrayList<>();
         for (int i = 0; i < user.size(); i++) {
@@ -105,7 +102,7 @@ public class AuthenticateController {
             usersDto.setUserId(user.get(i).getUserId());
             usersDto.setUserName(user.get(i).getUserName());
             usersDto.setFirstName(user.get(i).getFirstName());
-            usersDto.setLastName(user.get(i).getFirstName());
+            usersDto.setLastName(user.get(i).getLastName());
             usersDto.setEmailId(user.get(i).getEmailId());
             usersDto.setPassword(user.get(i).getPassword());
             usersDto.setLanguage(user.get(i).getLanguage());
@@ -114,10 +111,9 @@ public class AuthenticateController {
         return usersDtoList;
     }
 
-    @RequestMapping("/createUser")
-    public void sendUser() {
+    @RequestMapping("/sendUser")
+    public void sendUserToTalentlink() {
         integrationApiService.sendUserToTalentLink();
-        authenticateService.MapUsertoTlk();
+        authenticateService.mapUsertoTlk();
     }
-
 }

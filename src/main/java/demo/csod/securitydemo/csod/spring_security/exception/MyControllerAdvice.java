@@ -45,5 +45,4 @@ public class MyControllerAdvice {
             (HttpServerErrorException.InternalServerError internalServerError){
         return new ResponseEntity<>(SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }

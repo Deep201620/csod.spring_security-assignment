@@ -66,7 +66,7 @@ public class AuthenticateService {
         return userDto;
     }
 
-    public void MapUsertoTlk() {
+    public void mapUsertoTlk() {
         Map<String, String> integerStringMap = integrationApiService.getTlkId();
         UserSourceSystem user = null;
         Iterator<Map.Entry<String,String>> iterator = integerStringMap.entrySet().iterator();
